@@ -17,7 +17,7 @@ class ViewController: UIViewController, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let model = models[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: PersonFollowingTableViewCell.identifier	, for: indexPath)
         cell.textLabel?.text = model.name
         return cell
     }
@@ -25,7 +25,7 @@ class ViewController: UIViewController, UITableViewDataSource {
 
     private let tableView: UITableView = {
         let table = UITableView()
-        table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        table.register(UITableViewCell.self, forCellReuseIdentifier: PersonFollowingTableViewCell.identifier)
         return table
     }()
     

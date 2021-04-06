@@ -17,4 +17,17 @@ struct Person {
     let middleName: String?
     let address: String?
     let gender: Gender
+    
+    init(name: String,
+        birthdate: Date? = nil,
+        middleName: String? = nil,
+        address: String? = nil,
+        gender: Gender = .other
+    ) {
+        self.name = name
+        self.birthdate = birthdate
+        self.middleName = middleName
+        self.address = address
+        self.gender = gender
+    }
 }
