@@ -10,22 +10,13 @@ import UIKit
 class ViewController: UIViewController, UITableViewDataSource {
     
     private var models = [Person]()
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        models.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let model = models[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: PersonFollowingTableViewCell.identifier	, for: indexPath)
-        cell.textLabel?.text = model.name
-        return cell
-    }
-    
 
     private let tableView: UITableView = {
         let table = UITableView()
-        table.register(UITableViewCell.self, forCellReuseIdentifier: PersonFollowingTableViewCell.identifier)
+        table.register(
+            PersonFollowingTableViewCell.self,
+            forCellReuseIdentifier: PersonFollowingTableViewCell.identifier
+        )
         return table
     }()
     
@@ -44,6 +35,24 @@ class ViewController: UIViewController, UITableViewDataSource {
         for name in names {
             models.append(Person(name: name))
         }
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        models.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let model = models[indexPath.row]
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: PersonFollowingTableViewCell.identifier,
+            for: indexPath
+        ) as? PersonFollowingTableViewCell else {
+            return UITableViewCell()
+        }
+        cell.configure(
+            with: PersonFollowingTableViewCellViewModel(with: model)
+        )
+        return cell
     }
 
 
