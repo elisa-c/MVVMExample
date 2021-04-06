@@ -7,11 +7,6 @@
 
 import UIKit
 
-struct Person {
-    var name: String
-}
-
-
 class ViewController: UIViewController, UITableViewDataSource {
     
     private var models = [Person]()
