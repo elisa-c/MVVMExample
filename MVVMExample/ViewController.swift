@@ -52,9 +52,15 @@ class ViewController: UIViewController, UITableViewDataSource {
         cell.configure(
             with: PersonFollowingTableViewCellViewModel(with: model)
         )
+        cell.delegate = self
         return cell
     }
 
 
 }
 
+extension ViewController: PersonFollowingTableViewCellDelegate {
+    func personFollowingTableViewCell(_ cell: PersonFollowingTableViewCell, didTapWith viewModel: PersonFollowingTableViewCellViewModel) {
+        
+    }
+}

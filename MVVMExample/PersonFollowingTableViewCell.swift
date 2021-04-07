@@ -7,8 +7,18 @@
 
 import UIKit
 
+protocol PersonFollowingTableViewCellDelegate: AnyObject {
+    func personFollowingTableViewCell(
+        _ cell: PersonFollowingTableViewCell, didTapWith viewModel: PersonFollowingTableViewCellViewModel
+    )
+}
+
 class PersonFollowingTableViewCell: UITableViewCell {
     static let identifier = "PersonFollowingTableViewCell"
+    
+    weak var delegate: PersonFollowingTableViewCellDelegate?
+    
+    private var viewModel: PersonFollowingTableViewCellViewModel?
     
     private let userImageView: UIImageView = {
         let imageView = UIImageView()
@@ -41,13 +51,29 @@ class PersonFollowingTableViewCell: UITableViewCell {
         contentView.addSubview(userImageView)
         contentView.addSubview(button)
         contentView.clipsToBounds = true
+        button.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
         fatalError()
     }
     
+    @objc private func didTapButton() {
+        guard let viewModel = viewModel else {
+            return
+        }
+        
+        var newViewModel = viewModel
+        newViewModel.currentlyFollowing = !viewModel.currentlyFollowing
+        
+        delegate?.personFollowingTableViewCell(self, didTapWith: viewModel
+        )
+        prepareForReuse()
+        configure(with: newViewModel)
+    }
+    
     func configure(with viewModel: PersonFollowingTableViewCellViewModel) {
+        self.viewModel = viewModel
         nameLabel.text = viewModel.name
         usernameLabel.text = viewModel.username
         userImageView.image = viewModel.image
@@ -76,6 +102,12 @@ class PersonFollowingTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        nameLabel.text = nil
+        usernameLabel.text = nil
+        userImageView.image = nil
+        button.layer.borderWidth = 0
+        button.backgroundColor = nil
+        button.setTitle(nil, for: .normal)
     }
 
 }
